@@ -19,7 +19,14 @@
   </el-menu>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
 
 <style scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {

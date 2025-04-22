@@ -6,6 +6,8 @@ import router from './router/index';
 <script setup lang="ts"></script>
 
 <style lang="scss">
+@import "./styles//ui";
+
 * {
   margin: 0;
   padding: 0;
