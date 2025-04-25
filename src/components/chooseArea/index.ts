@@ -1,5 +1,5 @@
 import type { App } from "vue";
-import chooseIcon from "./src/index.vue";
+import chooseArea from "./src/index.vue";
 
 /**
  * 按需引入组件
@@ -7,6 +7,6 @@ import chooseIcon from "./src/index.vue";
  */
 export default {
   install(app: App) {
-    app.component("j-choose-icon", chooseIcon);
+    app.component("j-choose-area", chooseArea);
   },
 };

@@ -1,4 +1,5 @@
 <template>
+  <!-- 省市区三级联动选择器容器 -->
   <div class="container">
     <el-select placeholder="请选择省份" v-model="province">
       <el-option
@@ -34,6 +35,7 @@
 
 <script setup lang="ts">
 import { watch, ref } from "vue";
+// 导入省市区JSON数据
 import allAreas from "../lib/pca-code.json";
 
 export interface AreaItem {
@@ -47,16 +49,19 @@ export interface AreaData {
   code: string; // 编码
 }
 
+// 省市区选择值
 let province = ref<string>();
 let city = ref<string>();
 let area = ref<string>();
 
+// 当前可选的市和区列表
 let selectCity = ref<AreaItem[]>([]);
 let selectArea = ref<AreaItem[]>([]);
 
 // 分发事件给父组件
 let emits = defineEmits(["change"]);
 
+// 监听省份选择变化
 watch(province, (newVal) => {
   if (!newVal) {
     selectCity.value = [];
@@ -72,6 +77,7 @@ watch(province, (newVal) => {
   }
 });
 
+// 监听城市选择变化
 watch(city, (newVal) => {
   if (!newVal || !province.value) {
     selectArea.value = [];
@@ -84,6 +90,7 @@ watch(city, (newVal) => {
 });
 
 // 监听区域选择
+// 监听区域选择变化并触发change事件
 watch(area, (newVal) => {
   if (newVal) {
     let provinceData: AreaData = {
