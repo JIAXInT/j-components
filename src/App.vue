@@ -28,4 +28,8 @@ body,
 .el-menu {
   height: 100%;
 }
+
+.el-popper {
+  padding: 0 !important;
+}
 </style>
