@@ -1,7 +1,19 @@
 <template>
   <div style="width: 200px; display: flex; gap: 30px">
     <j-menu :data="data1" default-active="2"></j-menu>
-    <j-infinite-menu :data="data2" default-active="2"></j-infinite-menu>
+    <!-- 无限层级 -->
+    <p>无限层级</p>
+    <j-infinite-menu :data="data2" default-active="2"> </j-infinite-menu>
+    <!-- 自定义属性名称 -->
+    <p>自定义属性名</p>
+    <j-menu
+      :data="data3"
+      default-active="2"
+      name="title"
+      index="id"
+      icon="iconName"
+      children="subItems"
+    ></j-menu>
   </div>
 </template>
 
@@ -89,6 +101,32 @@ let data2 = [
           },
         ],
       },
+    ],
+  },
+];
+
+let data3 = [
+  {
+    title: "首页",
+    id: "1",
+    iconName: "House",
+  },
+  {
+    title: "商品管理",
+    id: "2",
+    iconName: "Memo",
+    subItems: [
+      { title: "商品列表", id: "2-1", iconName: "List" },
+      { title: "商品分类", id: "2-2", iconName: "FolderOpened" },
+    ],
+  },
+  {
+    title: "订单管理",
+    id: "3",
+    iconName: "DocumentRemove",
+    subItems: [
+      { title: "订单列表", id: "3-1", iconName: "Tickets" },
+      { title: "订单分类", id: "3-2", iconName: "Collection" },
     ],
   },
 ];

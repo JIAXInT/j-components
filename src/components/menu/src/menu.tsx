@@ -1,6 +1,7 @@
 import { defineComponent, type PropType, useAttrs } from "vue";
 import type { MenuItem } from "./type";
-import { toLine } from "../../../utils";
+import * as Icons from "@element-plus/icons-vue";
+import "./syules/index.scss";
 
 export default defineComponent({
   // 组件属性定义
@@ -20,6 +21,23 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // 菜单标题键名
+    name: {
+      type: String,
+      default: "name",
+    },
+    index: {
+      type: String,
+      default: "index",
+    },
+    icon: {
+      type: String,
+      default: "icon",
+    },
+    children: {
+      type: String,
+      default: "children",
+    },
   },
   setup(props, ctx) {
     /**
@@ -27,31 +45,31 @@ export default defineComponent({
      * @param data 菜单数据数组
      * @returns 渲染后的菜单JSX
      */
-    let renderMenu = (data: MenuItem[]) => {
-      return data.map((item: MenuItem) => {
+    let renderMenu = (data: any[]) => {
+      return data.map((item: any) => {
         // 每个菜单的图标
-        item.i = `el-icon${toLine(item.icon!)}`;
+        item.i = (Icons as any)[item[props.icon!]];
         let slots = {
           title: () => {
             return (
               <>
                 <item.i></item.i>
-                <span>{item.name}</span>
+                <span>{item[props.name]}</span>
               </>
             );
           },
         };
-        if (item.children && item.children.length > 0) {
+        if (item[props.children] && item[props.children].length > 0) {
           return (
-            <el-sub-menu index={item.index} v-slots={slots}>
-              {renderMenu(item.children)}
+            <el-sub-menu index={item[props.index]} v-slots={slots}>
+              {renderMenu(item[props.children])}
             </el-sub-menu>
           );
         }
         return (
-          <el-menu-item index={item.index}>
+          <el-menu-item index={item[props.index]}>
             <item.i></item.i>
-            <span>{item.name}</span>
+            <span>{item[props.name]}</span>
           </el-menu-item>
         );
       });
