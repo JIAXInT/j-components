@@ -86,8 +86,6 @@ let props = defineProps({
     default: "children",
   },
 });
-
-console.log(props.data);
 </script>
 
 <style scoped lang="scss">
