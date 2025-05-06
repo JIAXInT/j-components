@@ -32,6 +32,17 @@ const routes: Array<RouteRecordRaw> = [
         path: "/menu",
         component: () => import("../views/menu/index.vue"),
       },
+<<<<<<< HEAD
+=======
+      {
+        path: "/progress",
+        component: () => import("../views/progress/index.vue"),
+      },
+      {
+        path: "/chooseTime",
+        component: () => import("../views/chooseTime/index.vue"),
+      },
+>>>>>>> relog
     ],
   },
 ];
