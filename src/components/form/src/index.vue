@@ -161,9 +161,21 @@ let resetFields = () => {
   }
 };
 
+// 表单验证
+let validate = () => {
+  return form.value?.validate();
+};
+
+// 获取表单数据
+let getFormData = () => {
+  return model.value;
+};
+
 // 分发方法
 defineExpose({
   resetFields,
+  validate,
+  getFormData,
 });
 
 // 组件挂载时初始化表单
