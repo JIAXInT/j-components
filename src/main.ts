@@ -6,6 +6,7 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import * as Icons from "@element-plus/icons-vue";
 import { toLine } from "./utils";
+import "./mock/index";
 
 import jUI from "./components";
 

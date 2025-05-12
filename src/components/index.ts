@@ -11,6 +11,7 @@ import chooseDate from "./chooseDate";
 import chooseCity from "./chooseCity";
 import form from "./form";
 import modelForm from "./modelForm";
+import table from "./table";
 
 const components = [
   chooseArea,
@@ -25,6 +26,7 @@ const components = [
   chooseCity,
   form,
   modelForm,
+  table,
 ];
 
 export default {

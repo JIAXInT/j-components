@@ -19,8 +19,11 @@
     "wangeditor": "^4.7.15"
   },
   "devDependencies": {
+    "@types/mockjs": "^1.0.10",
     "@vitejs/plugin-vue": "^5.2.2",
     "@vue/tsconfig": "^0.7.0",
+    "axios": "^1.9.0",
+    "mockjs": "^1.1.0",
     "sass": "^1.86.3",
     "sass-loader": "^16.0.5",
     "typescript": "~5.7.2",
