@@ -1,0 +1,9 @@
+.VPDoc.has-aside .content-container[data-v-eee2fd3b] {
+  max-width: 100%;
+}
+
+@media (min-width: 960px) {
+  .content[data-v-eee2fd3b] {
+    padding: 0 32px 30px;
+  }
+}

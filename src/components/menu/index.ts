@@ -1,6 +1,6 @@
 import type { App } from "vue";
 import menu from "./src/index.vue";
-import infiniteMenu from "./src/menu";
+// import infiniteMenu from "./src/menu";
 
 /**
  * 按需引入组件
@@ -9,6 +9,6 @@ import infiniteMenu from "./src/menu";
 export default {
   install(app: App) {
     app.component("j-menu", menu);
-    app.component("j-infinite-menu", infiniteMenu);
+    // app.component("j-infinite-menu", infiniteMenu);
   },
 };

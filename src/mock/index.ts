@@ -20,7 +20,8 @@ for (let i = 0; i < 100; i++) {
 }
 // list 分页接口()
 
-Mock.mock("/api/list", "post", (params: any) => {
+// 支持两种origin的请求
+Mock.mock(/\/api\/list/, "post", (params: any) => {
   let info = JSON.parse(params.body);
   let [index, size, total] = [info.current, info.pageSize, dataList.length];
   let len = total / size;

@@ -1,4 +1,6 @@
+<!-- 表格组件模板 -->
 <template>
+  <!-- 主表格组件 -->
   <el-table
     v-bind="$attrs"
     :data="tableData"
@@ -10,21 +12,31 @@
     :element-loading-svg-view-box="elementLoadingSvgViewBox"
     @row-click="handleRowClick"
   >
+    <!-- 动态生成表格列 -->
     <template v-for="(item, index) in tableOptions" :key="index">
       <!-- 自定义列 -->
+      <!-- 主表格组件 -->
+      <!-- 表格列定义 -->
+      <!-- 操作列定义 -->
       <el-table-column
         :prop="item.prop"
         :label="item.label"
         :width="item.width"
         :align="item.align"
       >
+        <!-- 列内容模板 -->
+        <!-- 操作列内容模板 -->
         <template #default="scope">
           <!-- 有编辑行操作 -->
+          <!-- 行编辑模式下的单元格 -->
           <template v-if="scope.row.rowEdit">
             <el-input size="small" v-model="scope.row[item.prop]"></el-input>
           </template>
           <!-- 没有编辑行操作 -->
+          <!-- 非行编辑模式下的单元格 -->
+          <!-- 普通显示模式 -->
           <template v-else>
+            <!-- 单元格编辑模式 -->
             <template v-if="scope.$index + scope.column.id === currentEdit">
               <div style="display: flex">
                 <el-input
@@ -47,6 +59,8 @@
                 </div>
               </div>
             </template>
+            <!-- 非行编辑模式下的单元格 -->
+            <!-- 普通显示模式 -->
             <template v-else>
               <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>
               <span v-else>{{ scope.row[item.prop] }}</span>
@@ -62,11 +76,17 @@
       </el-table-column>
     </template>
 
+    <!-- 主表格组件 -->
+    <!-- 表格列定义 -->
+    <!-- 操作列定义 -->
     <el-table-column
-      :label="actionOptions!.label"
-      :align="actionOptions!.align"
-      :width="actionOptions!.width"
+      v-if="actionOptions"
+      :label="actionOptions?.label"
+      :align="actionOptions?.align"
+      :width="actionOptions?.width"
     >
+      <!-- 列内容模板 -->
+      <!-- 操作列内容模板 -->
       <template #default="scope">
         <slot name="editRow" v-if="scope.row.rowEdit"></slot>
         <slot name="action" :scope="scope" v-else></slot>
@@ -74,6 +94,7 @@
     </el-table-column>
   </el-table>
 
+  <!-- 分页组件 -->
   <div
     class="pagination"
     :style="{ justifyContent: paginationAlignJustify }"
@@ -98,10 +119,12 @@ import { toLine } from "../../../utils";
 import { cloneDeep } from "lodash";
 
 let props = defineProps({
+  // 表格列配置
   options: {
     type: Array as PropType<TableOptions[]>,
     required: true,
   },
+  // 表格数据
   data: {
     type: Array as PropType<any[]>,
     required: true,
