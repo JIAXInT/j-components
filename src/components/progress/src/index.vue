@@ -1,32 +1,46 @@
 <template>
-  <el-progress :percentage="p" v-bind="$attrs"></el-progress>
+  <component
+    :is="
+      h(
+        ElProgress,
+        {
+          percentage: p,
+          ...props,
+          ...$attrs,
+        },
+        $slots
+      )
+    "
+  ></component>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, h, getCurrentInstance } from "vue";
+import { ElProgress, type ProgressProps } from "element-plus";
 
-// 标识动画加载过程中改变的值
-let num = ref<number>(0);
+// 获取组件实例
+const vm = getCurrentInstance();
 
-let props = defineProps({
+/**
+ * 进度条组件属性接口
+ */
+interface JProgressProps extends Partial<ProgressProps> {
   // 进度条进度
-  percentage: {
-    type: Number,
-    required: true,
-  },
+  percentage: number;
   // 是否有动画效果
-  isAnimate: {
-    type: Boolean,
-    default: false,
-  },
+  isAnimate?: boolean;
   // 动画时长(毫秒)
-  time: {
-    type: Number,
-    default: 3000,
-  },
+  time?: number;
+}
+
+// 组件props定义
+let props = withDefaults(defineProps<JProgressProps>(), {
+  isAnimate: false,
+  time: 3000,
 });
 
-let p = ref(0);
+// 当前显示的进度值
+let p = ref(props.isAnimate ? 0 : props.percentage);
 
 onMounted(() => {
   if (props.isAnimate) {

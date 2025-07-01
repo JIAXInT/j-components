@@ -7,25 +7,36 @@
 4. 点击选择后触发changeCity/changeProvince事件
 -->
 <template>
-  <el-popover
-    placement="bottom-start"
-    :width="430"
-    trigger="click"
-    v-model:visible="visible"
+  <component
+    :is="
+      h(ElPopover, {
+        placement: 'bottom-start',
+        width: 430,
+        trigger: 'click',
+        visible: visible,
+        'onUpdate:visible': (val) => (visible = val),
+        ...($attrs.popoverOptions || {}),
+      })
+    "
   >
+    <!-- 参考区域 -->
     <template #reference>
-      <div class="result">{{ result }}</div>
-      <div>
-        <el-icon-arrowup v-if="visible"></el-icon-arrowup>
-        <el-icon-arrowdown v-else></el-icon-arrowdown>
+      <div style="display: flex; align-items: center; cursor: pointer">
+        <div class="result">{{ result }}</div>
+        <div>
+          <component :is="visible ? 'el-icon-arrowup' : 'el-icon-arrowdown'" />
+        </div>
       </div>
     </template>
+
+    <!-- 内容区域 -->
     <div class="content">
+      <!-- 头部搜索和切换区域 -->
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="radioValue" size="small">
-            <el-radio-button label="按城市" value="按城市" />
-            <el-radio-button label="按省份" value="按省份" />
+            <el-radio-button label="按城市" />
+            <el-radio-button label="按省份" />
           </el-radio-group>
         </el-col>
         <el-col :span="15" :offset="1">
@@ -47,13 +58,16 @@
           </el-select>
         </el-col>
       </el-row>
+
+      <!-- 按城市模式 -->
       <template v-if="radioValue === '按城市'">
         <div class="city">
           <!-- 字母区域 -->
           <div
+            v-for="item in Object.keys(cities)"
+            :key="item"
             class="city-item"
             @click="clickChat(item)"
-            v-for="(item, index) in Object.keys(cities)"
           >
             {{ item }}
           </div>
@@ -61,11 +75,11 @@
         <el-scrollbar max-height="300px">
           <template v-for="(value, key) in cities" :key="key">
             <el-row style="margin-bottom: 10px" :id="key">
-              <el-col :span="2"> {{ key }}:</el-col>
+              <el-col :span="2">{{ key }}:</el-col>
               <el-col class="city-name" :span="22">
-                <div v-for="(item, index) in value" :key="item.id">
-                  <div class="city-name-item" @click="clickItem(item)">
-                    {{ item.name }}
+                <div v-for="city in value" :key="city.id">
+                  <div class="city-name-item" @click="clickItem(city)">
+                    {{ city.name }}
                   </div>
                 </div>
               </el-col>
@@ -73,12 +87,14 @@
           </template>
         </el-scrollbar>
       </template>
+
+      <!-- 按省份模式 -->
       <template v-else>
         <div class="province">
           <div
-            class="province-item"
             v-for="(item, index) in Object.keys(provinces)"
             :key="index"
+            class="province-item"
             @click="clickChat(item)"
           >
             {{ item }}
@@ -89,13 +105,16 @@
             v-for="(item, index) in Object.values(provinces)"
             :key="index"
           >
-            <template v-for="(item1, index1) in item" :key="index1">
-              <el-row style="margin-bottom: 10px" :id="item1.id">
-                <el-col :span="3"> {{ item1.name }}:</el-col>
+            <template v-for="(prov, index1) in (item as any[])" :key="index1">
+              <el-row style="margin-bottom: 10px" :id="(prov as any).id">
+                <el-col :span="3">{{ (prov as any).name }}:</el-col>
                 <el-col class="city-name" :span="21">
-                  <div v-for="(item2, index2) in item1.data" :key="index2">
-                    <div class="city-name-item" @click="clickProvince(item2)">
-                      {{ item2 }}
+                  <div
+                    v-for="(name, index2) in (prov as any).data"
+                    :key="index2"
+                  >
+                    <div class="city-name-item" @click="clickProvince(name)">
+                      {{ name }}
                     </div>
                   </div>
                 </el-col>
@@ -105,14 +124,34 @@
         </el-scrollbar>
       </template>
     </div>
-  </el-popover>
+  </component>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import {
+  onMounted,
+  ref,
+  watch,
+  h,
+  resolveComponent,
+  getCurrentInstance,
+} from "vue";
+import {
+  ElPopover,
+  ElRow,
+  ElCol,
+  ElRadioGroup,
+  ElRadioButton,
+  ElSelect,
+  ElOption,
+  ElScrollbar,
+} from "element-plus";
 import city from "../lib/city";
 import province from "../lib/province.json";
 import type { ICity, IProvince } from "./type";
+
+// 获取组件实例
+const vm = getCurrentInstance();
 
 // 分发事件给父组件
 // changeCity: 当选择城市时触发，参数为城市对象
@@ -136,7 +175,9 @@ let selectValue = ref<string>("");
 const options = ref<ICity[]>([]);
 // 城市数据，从city模块导入
 // 数据结构: {字母: [城市对象数组]}
-let cities = ref<any>(city.cities);
+let cities = ref<Record<string, ICity[]>>({
+  ...(city.cities as Record<string, ICity[]>),
+});
 let provinces = ref<any>(province);
 // 搜索输入框的值
 let searchValue = ref<string>("");
@@ -248,14 +289,12 @@ svg {
     cursor: pointer;
   }
 }
-
 .city-name {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   &-item {
-    margin-right: 8px;
-    margin-bottom: 8px;
+    margin-right: 5px;
+    margin-bottom: 5px;
     cursor: pointer;
   }
 }

@@ -1,36 +1,59 @@
 <template>
   <div class="j-choose-icon-dialog-body-height">
     <!-- 触发弹窗按钮 -->
-    <el-button @click="handleClick" type="primary">
-      <slot></slot>
-    </el-button>
+    <component
+      :is="
+        h(
+          ElButton,
+          {
+            onClick: handleClick,
+            type: 'primary',
+            ...($attrs.buttonOptions || {}),
+          },
+          { default: () => ($slots.default ? $slots.default() : '选择图标') }
+        )
+      "
+    />
 
     <!-- 图标选择弹窗 -->
-    <el-dialog
-      :title="title"
-      :model-value="visible"
-      @update:model-value="emits('update:visible', $event)"
-    >
-      <!-- 图标展示区 -->
-      <div class="container">
-        <div
-          v-for="(item, index) in Object.keys(ElIcons)"
-          :key="index"
-          class="item"
-          @click="clickItem(item)"
-        >
-          <div>
-            <!-- 动态渲染图标 -->
-            <component
-              :is="`el-icon${toLine(item)}`"
-              style="font-size: 20px; margin-right: 10px"
-            />
-          </div>
-          <div class="icon">{{ item }}</div>
-          <!-- 图标名称 -->
-        </div>
-      </div>
-    </el-dialog>
+    <component
+      :is="
+        h(
+          ElDialog,
+          {
+            title: title,
+            modelValue: visible,
+            'onUpdate:modelValue': (val) => emits('update:visible', val),
+            ...($attrs.dialogOptions || {}),
+          },
+          {
+            default: () =>
+              h(
+                'div',
+                { class: 'container' },
+                Object.keys(ElIcons).map((item) =>
+                  h(
+                    'div',
+                    {
+                      class: 'item',
+                      onClick: () => clickItem(item),
+                      key: item,
+                    },
+                    [
+                      h('div', {}, [
+                        h(resolveComponent(`el-icon${toLine(item)}`), {
+                          style: 'font-size: 20px; margin-right: 10px',
+                        }),
+                      ]),
+                      h('div', { class: 'icon' }, item),
+                    ]
+                  )
+                )
+              ),
+          }
+        )
+      "
+    />
   </div>
 </template>
 
@@ -38,12 +61,20 @@
 import * as ElIcons from "@element-plus/icons-vue";
 import { toLine } from "../../../utils/index";
 import { useCopy } from "../../../hooks/useCopy/index";
+import { h, resolveComponent, getCurrentInstance } from "vue";
+import { ElButton, ElDialog } from "element-plus";
+
+// 获取组件实例
+const vm = getCurrentInstance();
 
 // 组件参数
-let props = defineProps<{
+interface ChooseIconProps {
   title: string; // 弹窗标题
   visible: boolean; // 显示状态
-}>();
+}
+
+// 组件props定义
+let props = defineProps<ChooseIconProps>();
 
 // 事件定义
 let emits = defineEmits<{

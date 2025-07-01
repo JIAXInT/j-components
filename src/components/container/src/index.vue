@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="auto">
-      <nav-side :collapse="isCollapse"></nav-side>
+      <nav-side :isCollapse="isCollapse"></nav-side>
     </el-aside>
     <el-container>
       <el-header

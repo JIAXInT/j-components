@@ -37,7 +37,7 @@ const buildAll = async () => {
       lib: {
         entry: path.resolve(entryDir, "index.ts"),
         name: "justic-ui",
-        fileName: "index",
+        fileName: (format) => (format === "es" ? "index.js" : "index.umd.cjs"),
         formats: ["es", "umd"],
       },
       outDir,
@@ -55,7 +55,7 @@ const buildSingle = async (name) => {
       lib: {
         entry: path.resolve(entryDir, name),
         name: "index",
-        fileName: "index",
+        fileName: (format) => (format === "es" ? "index.js" : "index.umd.cjs"),
         formats: ["es", "umd"],
       },
       outDir: path.resolve(outDir, name),
@@ -68,8 +68,8 @@ const createPackageJson = (name) => {
   const fileStr = `
   {
     "name":"${name}",
-    "main":"index.umd.js",
-    "module":"index.es.js",
+    "main":"index.umd.cjs",
+    "module":"index.js",
     "style":"style.css"
   }
   `;
@@ -92,7 +92,7 @@ const buildLib = async () => {
   const libPkg = {
     name: "justic-ui",
     version: "1.*.*",
-    main: "index.umd.js",
+    main: "index.umd.cjs",
     module: "index.js",
     types: "index.d.ts",
     author: "Justic",

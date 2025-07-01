@@ -4,6 +4,7 @@
     class="el-menu-vertical-demo"
     :default-active="defaultActive"
     :router="router"
+    :collapse="isCollapse"
     v-bind="$attrs"
   >
     <!-- 遍历菜单数据，渲染菜单项 -->
@@ -11,7 +12,7 @@
       <!-- 无子菜单的菜单项 -->
       <el-menu-item
         v-if="!item[children] || !item[children].length"
-        :index="item.i"
+        :index="item[index]"
       >
         <component
           v-if="item[icon]"
@@ -22,7 +23,7 @@
       <!-- 有子菜单的菜单项 -->
       <el-sub-menu
         v-if="item[children] && item[children].length"
-        :index="item.index"
+        :index="item[index]"
       >
         <template #title>
           <component
@@ -32,8 +33,8 @@
           <span>{{ item[name] }}</span>
         </template>
         <el-menu-item
-          v-for="(child, index) in item[children]"
-          :key="index"
+          v-for="(child, index2) in item[children]"
+          :key="index2"
           :index="child[index]"
         >
           <component
@@ -65,6 +66,11 @@ let props = defineProps({
   },
   // 是否启用路由模式
   router: {
+    type: Boolean,
+    default: false,
+  },
+  // 是否折叠菜单
+  isCollapse: {
     type: Boolean,
     default: false,
   },

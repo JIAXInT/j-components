@@ -1,45 +1,68 @@
 <template>
   <div style="display: flex">
     <div style="margin-right: 20px">
-      <el-date-picker
-        v-model="startDate"
-        type="date"
-        :placeholder="startPlaceholder"
-        :disabled-date="startDisabledDate"
-        v-bind="$attrs.startOptions!"
-      ></el-date-picker>
+      <component
+        :is="
+          h(
+            ElDatePicker,
+            {
+              modelValue: startDate,
+              'onUpdate:modelValue': (val) => (startDate = val),
+              type: 'date',
+              placeholder: startPlaceholder,
+              disabledDate: startDisabledDate,
+              ...($attrs.startOptions || {}),
+            },
+            $slots
+          )
+        "
+      />
     </div>
     <div>
-      <el-date-picker
-        v-model="endDate"
-        type="date"
-        :placeholder="endPlaceholder"
-        :disabled="endDateDisabled"
-        :disabled-date="endDisabledDate"
-        v-bind="$attrs.endOptions!"
-      ></el-date-picker>
+      <component
+        :is="
+          h(
+            ElDatePicker,
+            {
+              modelValue: endDate,
+              'onUpdate:modelValue': (val) => (endDate = val),
+              type: 'date',
+              placeholder: endPlaceholder,
+              disabled: endDateDisabled,
+              disabledDate: endDisabledDate,
+              ...($attrs.endOptions || {}),
+            },
+            $slots
+          )
+        "
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, h, getCurrentInstance } from "vue";
+import { ElDatePicker, type DatePickerProps } from "element-plus";
 
-let props = defineProps({
-  startPlaceholder: {
-    type: String,
-    default: "请选择开始日期",
-  },
-  endPlaceholder: {
-    type: String,
-    default: "请选择结束日期",
-  },
+/**
+ * 日期选择器组件属性接口
+ */
+interface ChooseDateProps extends Partial<DatePickerProps> {
+  startPlaceholder?: string;
+  endPlaceholder?: string;
   // 是否禁用选择今天之前的日期
-  disabledBeforeToday: {
-    type: Boolean,
-    default: true,
-  },
+  disabledBeforeToday?: boolean;
+}
+
+// 组件props定义
+let props = withDefaults(defineProps<ChooseDateProps>(), {
+  startPlaceholder: "请选择开始日期",
+  endPlaceholder: "请选择结束日期",
+  disabledBeforeToday: true,
 });
+
+// 获取组件实例
+const vm = getCurrentInstance();
 
 let emits = defineEmits(["startChange", "endChange"]);
 
@@ -56,7 +79,7 @@ let startDisabledDate = (time: Date) => {
     return time.getTime() < Date.now() - 8.64e7; // 禁用今天之前的日期
   }
 };
-// 禁用结束日期的函数;1
+// 禁用结束日期的函数
 let endDisabledDate = (time: Date) => {
   if (startDate.value) {
     return time.getTime() < startDate.value.getTime() + 8.64e7; // 禁用开始日期之前的日期

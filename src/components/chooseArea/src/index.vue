@@ -1,42 +1,87 @@
 <template>
   <!-- 省市区三级联动选择器容器 -->
   <div class="container">
-    <el-select placeholder="请选择省份" v-model="province">
-      <el-option
+    <!-- 省份选择器 -->
+    <component
+      :is="
+        h(ElSelect, {
+          placeholder: '请选择省份',
+          modelValue: province,
+          'onUpdate:modelValue': (val) => (province = val),
+          ...($attrs.provinceOptions || {}),
+        })
+      "
+    >
+      <component
         v-for="item in allAreas"
         :key="item.code"
-        :value="item.code"
-        :label="item.name"
-      >
-      </el-option>
-    </el-select>
-    <el-select :disabled="!province" placeholder="请选择城市" v-model="city">
-      <el-option
+        :is="
+          h(ElOption, {
+            value: item.code,
+            label: item.name,
+          })
+        "
+      />
+    </component>
+
+    <!-- 城市选择器 -->
+    <component
+      :is="
+        h(ElSelect, {
+          placeholder: '请选择城市',
+          modelValue: city,
+          'onUpdate:modelValue': (val) => (city = val),
+          disabled: !province,
+          ...($attrs.cityOptions || {}),
+        })
+      "
+    >
+      <component
         v-for="item in selectCity"
         :key="item.code"
-        :value="item.code"
-        :label="item.name"
-      ></el-option>
-    </el-select>
-    <el-select
-      :disabled="!province || !city"
-      placeholder="请选择区域"
-      v-model="area"
+        :is="
+          h(ElOption, {
+            value: item.code,
+            label: item.name,
+          })
+        "
+      />
+    </component>
+
+    <!-- 区域选择器 -->
+    <component
+      :is="
+        h(ElSelect, {
+          placeholder: '请选择区域',
+          modelValue: area,
+          'onUpdate:modelValue': (val) => (area = val),
+          disabled: !province || !city,
+          ...($attrs.areaOptions || {}),
+        })
+      "
     >
-      <el-option
+      <component
         v-for="item in selectArea"
         :key="item.code"
-        :value="item.code"
-        :label="item.name"
-      ></el-option>
-    </el-select>
+        :is="
+          h(ElOption, {
+            value: item.code,
+            label: item.name,
+          })
+        "
+      />
+    </component>
   </div>
 </template>
 
 <script setup lang="ts">
-import { watch, ref } from "vue";
+import { watch, ref, h, getCurrentInstance } from "vue";
+import { ElSelect, ElOption } from "element-plus";
 // 导入省市区JSON数据
 import allAreas from "../lib/pca-code.json";
+
+// 获取组件实例
+const vm = getCurrentInstance();
 
 export interface AreaItem {
   name: string;
@@ -89,7 +134,6 @@ watch(city, (newVal) => {
   }
 });
 
-// 监听区域选择
 // 监听区域选择变化并触发change事件
 watch(area, (newVal) => {
   if (newVal) {

@@ -23,7 +23,7 @@
     "@vitepress-demo-preview/plugin": "^1.4.0",
     "@vue/babel-preset-jsx": "^1.4.0",
     "element-plus": "^2.9.7",
-    "justic-ui": "^1.0.6",
+    "justic-ui": "^1.1.1",
     "lodash": "^4.17.21",
     "vue": "^3.5.13",
     "vue-router": "^4.0.13",

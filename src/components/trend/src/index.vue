@@ -8,87 +8,83 @@
     </div>
     <!-- 图标部分，根据趋势类型显示不同图标 -->
     <div class="icon">
-      <!-- 动态组件渲染，根据type显示上升或下降图标 -->
+      <!-- 使用h函数渲染动态图标组件 -->
       <component
-        :is="`el-icon${toLine(upIcon)}`"
-        :style="{ color: !reverseColor ? upIconColor : '#52c41a' }"
-        v-if="type === 'up'"
-      />
-      <component
-        :is="`el-icon${toLine(downIcon)}`"
-        :style="{ color: !reverseColor ? downIconColor : '#f5222d' }"
-        v-else
+        :is="
+          h(
+            resolveComponent(
+              `el-icon${toLine(type === 'up' ? upIcon : downIcon)}`
+            ),
+            {
+              style: {
+                color:
+                  type === 'up'
+                    ? !reverseColor
+                      ? upIconColor
+                      : downIconColor
+                    : !reverseColor
+                    ? downIconColor
+                    : upIconColor,
+              },
+              ...($attrs.iconOptions || {}),
+            }
+          )
+        "
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, useSlots } from "vue";
+import {
+  ref,
+  computed,
+  useSlots,
+  h,
+  resolveComponent,
+  getCurrentInstance,
+} from "vue";
 import { toLine } from "../../../utils";
 
-let props = defineProps({
+/**
+ * 趋势组件属性接口
+ */
+interface TrendProps {
   // 标记当前的趋势是上升还是下降(up/down)
-  type: {
-    type: String,
-    default: "up",
-    validator: (value: string) => {
-      return ["up", "down"].includes(value);
-    },
-  },
+  type?: string;
   // 上升趋势的图标
-  upIcon: {
-    type: String,
-    default: "ArrowUp",
-  },
+  upIcon?: string;
   // 下降趋势的图标
-  downIcon: {
-    type: String,
-    default: "ArrowDown",
-  },
+  downIcon?: string;
   // 趋势形式的文字
-  text: {
-    type: String,
-    default: "上升",
-  },
+  text?: string;
   // 颜色反转（只在默认颜色下生效）
-  reverseColor: {
-    type: Boolean,
-    default: false,
-  },
+  reverseColor?: boolean;
   // 上升趋势图标颜色
-  upIconColor: {
-    type: String,
-    default: "#f5222d",
-  },
+  upIconColor?: string;
   // 下降趋势图标颜色
-  downIconColor: {
-    type: String,
-    default: "#52c41a",
-  },
+  downIconColor?: string;
   // 上升趋势文字颜色
-  upTextColor: {
-    type: String,
-    default: "#000",
-  },
+  upTextColor?: string;
   // 下降趋势文字颜色
-  downTextColor: {
-    type: String,
-    default: "#000",
-  },
+  downTextColor?: string;
+}
+
+// 组件props定义
+let props = withDefaults(defineProps<TrendProps>(), {
+  type: "up",
+  upIcon: "ArrowUp",
+  downIcon: "ArrowDown",
+  text: "上升",
+  reverseColor: false,
+  upIconColor: "#f5222d",
+  downIconColor: "#52c41a",
+  upTextColor: "#000",
+  downTextColor: "#000",
 });
 
-onMounted(() => {
-  // 如果传递了颜色反转
-  if (props.reverseColor) {
-    let temp = props.upIconColor;
-    // 由于 props 是只读的，不能直接修改，这里通过定义响应式变量来处理
-    let upIconColor = ref(props.upIconColor);
-    upIconColor.value = props.downIconColor;
-    let downIconColor = ref(props.downIconColor);
-    downIconColor.value = temp;
-  }
-});
+// 获取组件实例
+const vm = getCurrentInstance();
 
 // 获取插槽内容
 let slots = useSlots();
