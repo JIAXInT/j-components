@@ -1,8 +1,0 @@
-
-  {
-    "name":"table",
-    "main":"index.umd.cjs",
-    "module":"index.js",
-    "style":"style.css"
-  }
-  

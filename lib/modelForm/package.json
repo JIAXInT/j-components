@@ -1,8 +1,0 @@
-
-  {
-    "name":"modelForm",
-    "main":"index.umd.cjs",
-    "module":"index.js",
-    "style":"style.css"
-  }
-  
