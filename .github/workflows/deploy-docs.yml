@@ -11,6 +11,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    # 添加环境变量解决crypto问题
+    env:
+      NODE_OPTIONS: --openssl-legacy-provider
+
     steps:
       # 检出代码，获取完整历史以便正确处理内容
       - name: 检出仓库代码
@@ -24,11 +28,11 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # 设置Node.js环境
+      # 设置Node.js环境 - 更新为Node.js 18
       - name: 设置Node.js环境
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
 
       # 安装pnpm
       - name: 设置pnpm
@@ -54,6 +58,13 @@ jobs:
       # 安装项目依赖
       - name: 安装项目依赖
         run: pnpm install
+
+      # 构建前诊断环境
+      - name: 环境诊断
+        run: |
+          node --version
+          pnpm --version
+          echo "Node crypto available: $(node -e 'console.log(typeof require("crypto").randomBytes === "function")')"
 
       # 构建VitePress文档
       - name: 构建文档网站
