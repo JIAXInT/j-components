@@ -1,21 +1,21 @@
 <template>
   <div>
-    <!-- <j-notification :value="15" :max="30"></j-notification>
+    <j-notification :value="15" :max="30" trigger="click">默认 </j-notification>
     <br /><br />
-    <j-notification :value="60" :max="30"></j-notification>
+    <j-notification :value="60" :max="30" @show="console.log('show')"
+      >设置最大值</j-notification
+    >
     <br /><br />
-    <j-notification :value="15" :max="30" :is-dot="true"></j-notification>
+    <j-notification :value="15" :max="30" :is-dot="true"> 圆点</j-notification>
     <br /><br />
-    <j-notification
-      icon="ChatRound"
-      :value="15"
-      :max="30"
-      :is-dot="true"
-    ></j-notification> -->
+    <j-notification icon="ChatRound" :value="15" :max="30" :is-dot="true">
+      自定义设置图标
+    </j-notification>
+    <br /><br />
     <j-notification :value="15" :max="30">
       <template #content>
-        <j-list :list="list" :actions="actions"></j-list>
-      </template>
+        <j-list :list="list" :actions="actions"></j-list
+      ></template>
     </j-notification>
   </div>
 </template>

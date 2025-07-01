@@ -13,7 +13,7 @@
         :prop="item.prop"
       >
         <component
-          v-if="item.type !== 'upload' && item.type !== 'editor'"
+          v-if="item.type !== 'upload' && item.type !== 'editor' && item.type"
           v-bind="item.attrs"
           :is="`el-${item.type}`"
           v-model="model[item.prop!]"
@@ -45,6 +45,7 @@
         :prop="item.prop"
       >
         <component
+          v-if="item.type"
           v-bind="item.attrs"
           :is="`el-${item.type}`"
           v-model="model[item.prop!]"
@@ -54,7 +55,7 @@
             :key="i"
             :label="child.label"
             :value="child.value"
-            :is="`el-${child.type}`"
+            :is="child.type ? `el-${child.type}` : 'div'"
           >
           </component>
         </component>

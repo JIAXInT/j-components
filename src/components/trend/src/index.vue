@@ -32,6 +32,9 @@ let props = defineProps({
   type: {
     type: String,
     default: "up",
+    validator: (value: string) => {
+      return ["up", "down"].includes(value);
+    },
   },
   // 上升趋势的图标
   upIcon: {
@@ -92,7 +95,10 @@ let slots = useSlots();
 
 // 文字颜色
 let textColor = computed(() => {
-  return props.type === "up" ? props.upTextColor : props.downTextColor;
+  // 确保type有有效值
+  const safeType =
+    props.type && ["up", "down"].includes(props.type) ? props.type : "up";
+  return safeType === "up" ? props.upTextColor : props.downTextColor;
 });
 </script>
 

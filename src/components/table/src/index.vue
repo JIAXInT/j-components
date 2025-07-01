@@ -65,8 +65,8 @@
               <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>
               <span v-else>{{ scope.row[item.prop] }}</span>
               <component
+                v-if="item.editable && editIcon"
                 :is="`el-icon-${toLine(editIcon)}`"
-                v-if="item.editable"
                 class="edit"
                 @click.stop="clickEdit(scope)"
               ></component>

@@ -12,7 +12,7 @@ import chooseCity from "./chooseCity";
 import form from "./form";
 import modelForm from "./modelForm";
 import table from "./table";
-import "./styles/ui.scss";
+import "../styles/ui.scss";
 import * as Icons from "@element-plus/icons-vue";
 import { toLine } from "../utils";
 

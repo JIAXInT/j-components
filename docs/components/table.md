@@ -9,15 +9,17 @@ Table 组件是基于 Element Plus 的 el-table 进行二次开发的功能增�
 
 ## 基础用法
 
-<preview path="../demo/Table/Basic.vue" title="基础用法" description="Table 组件的基础用法"></preview>
+<!-- <preview path="../demo/Table/Basic.vue" title="基础用法" description="Table 组件的基础用法"></preview> -->
 
 ## 行编辑功能
 
-<preview path="../demo/Table/RowEdit.vue" title="行编辑" description="Table 组件的行编辑功能"></preview>
+<!--
+<preview path="../demo/Table/RowEdit.vue" title="行编辑" description="Table 组件的行编辑功能"></preview> -->
 
 ## 分页功能
 
-<preview path="../demo/Table/Pagination.vue" title="分页" description="Table 组件的分页功能"></preview>
+<!--
+<preview path="../demo/Table/Pagination.vue" title="分页" description="Table 组件的分页功能"></preview> -->
 
 ## API
 
