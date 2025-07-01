@@ -9,7 +9,7 @@ hero:
   text: 现代化Vue3组件库
   tagline: 为企业级应用提供高质量、可复用的UI组件
   image:
-    src: /public/justic.svg
+    src: /justic.svg
     alt: Jutsic-UI
   actions:
     - theme: brand

@@ -5,11 +5,15 @@ import {
   containerPreview,
 } from "@vitepress-demo-preview/plugin";
 
+// 获取仓库名称用于GitHub Pages路径
+const repo = "j-components"; // 根据您的仓库名称修改这里
+
 export default defineConfig({
   title: "Jutsic-UI",
-  base: "/",
+  // 设置base，以便在GitHub Pages上正确加载资源
+  base: process.env.NODE_ENV === "production" ? `/${repo}/` : "/",
   description: "Justic-UI组件库文档",
-  head: [["link", { rel: "icon", href: "/public/favicon.ico" }]],
+  head: [["link", { rel: "icon", href: "/favicon.ico" }]], // 修正favicon路径
   markdown: {
     config(md) {
       md.use(componentPreview);
