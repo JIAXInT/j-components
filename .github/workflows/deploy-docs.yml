@@ -55,13 +55,6 @@ jobs:
           echo "检查package.json是否存在:"
           ls -la package.json
 
-      # 首先构建组件库
-      - name: 构建组件库
-        run: |
-          pnpm install
-          pnpm run lib
-          ls -la lib || echo "lib目录不存在!"
-
       # 安装文档依赖并构建
       - name: 构建文档
         run: |
