@@ -66,6 +66,10 @@ jobs:
       - name: 安装项目依赖
         run: pnpm install
 
+      # 安装terser作为可选依赖
+      - name: 安装terser
+        run: pnpm add terser -D
+
       # 构建前诊断环境
       - name: 环境诊断
         run: |
@@ -73,10 +77,13 @@ jobs:
           pnpm --version
           echo "Node crypto available: $(node -e 'console.log(typeof require("crypto").randomBytes === "function")')"
           echo "NODE_ENV: $NODE_ENV"
+          ls -la node_modules/.bin
+          echo "检查vitepress是否已安装:"
+          pnpm list vitepress
 
-      # 构建VitePress文档
+      # 构建VitePress文档 - 使用npx确保找到正确的命令
       - name: 构建文档网站
-        run: pnpm run docs:build
+        run: npx vitepress build docs
         env:
           NODE_ENV: production
 

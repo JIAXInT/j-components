@@ -33,7 +33,6 @@ export default defineConfig({
     },
     // 构建优化
     build: {
-      minify: "terser",
       chunkSizeWarningLimit: 1600,
     },
     optimizeDeps: {
