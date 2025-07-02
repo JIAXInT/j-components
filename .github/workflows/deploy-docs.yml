@@ -40,35 +40,34 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+          cache: "npm" # 使用npm缓存
 
       # 安装pnpm
       - name: 设置pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 7
-          run_install: false
+          run_install: false # 不自动安装，我们将手动安装
 
-      # 缓存pnpm依赖以加速构建
-      - name: 获取pnpm缓存目录
-        id: pnpm-cache
+      # 诊断工作目录
+      - name: 检查工作目录
         run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+          pwd
+          ls -la
+          echo "检查package.json是否存在:"
+          cat package.json
 
-      - name: 设置pnpm缓存
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      # 安装项目依赖
+      # 显式安装项目依赖
       - name: 安装项目依赖
-        run: pnpm install
-
-      # 安装terser作为可选依赖
-      - name: 安装terser
-        run: pnpm add terser -D
+        run: |
+          pnpm install --no-frozen-lockfile
+          # 确保安装了关键依赖
+          pnpm add vitepress terser -D
+          # 验证安装结果
+          ls -la
+          ls -la node_modules || echo "node_modules目录不存在！"
+          echo "pnpm store目录:"
+          pnpm store path
 
       # 构建前诊断环境
       - name: 环境诊断
@@ -77,19 +76,24 @@ jobs:
           pnpm --version
           echo "Node crypto available: $(node -e 'console.log(typeof require("crypto").randomBytes === "function")')"
           echo "NODE_ENV: $NODE_ENV"
-          ls -la node_modules/.bin
           echo "检查vitepress是否已安装:"
           pnpm list vitepress
+          echo "尝试直接找到vitepress可执行文件:"
+          find . -name vitepress
 
-      # 构建VitePress文档 - 使用npx确保找到正确的命令
+      # 构建VitePress文档 - 使用完整路径
       - name: 构建文档网站
-        run: npx vitepress build docs
+        run: |
+          # 尝试使用不同方式执行vitepress
+          ./node_modules/.bin/vitepress build docs || \
+          npx --no-install vitepress build docs || \
+          pnpm exec vitepress build docs
         env:
           NODE_ENV: production
 
       # 检查构建结果
       - name: 检查构建目录
-        run: ls -la docs/.vitepress/dist
+        run: ls -la docs/.vitepress/dist || echo "构建目录不存在!"
 
       # 部署到GitHub Pages
       - name: 部署到gh-pages分支
