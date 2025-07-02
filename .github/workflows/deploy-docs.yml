@@ -17,7 +17,6 @@ jobs:
 
     # 添加环境变量解决crypto问题以及确保正确base路径
     env:
-      NODE_OPTIONS: --openssl-legacy-provider
       NODE_ENV: production # 确保使用正确的base路径配置
 
     steps:
@@ -35,19 +34,18 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # 设置Node.js环境 - 更新为Node.js 18
+      # 设置Node.js环境 - 使用Node.js 18
       - name: 设置Node.js环境
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-          cache: "npm" # 使用npm缓存
 
       # 安装pnpm
       - name: 设置pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 7
-          run_install: false # 不自动安装，我们将手动安装
+          run_install: false
 
       # 诊断工作目录
       - name: 检查工作目录
@@ -55,45 +53,24 @@ jobs:
           pwd
           ls -la
           echo "检查package.json是否存在:"
-          cat package.json
+          ls -la package.json
 
-      # 显式安装项目依赖
-      - name: 安装项目依赖
+      # 首先构建组件库
+      - name: 构建组件库
         run: |
-          pnpm install --no-frozen-lockfile
-          # 确保安装了关键依赖
-          pnpm add vitepress terser -D
-          # 验证安装结果
-          ls -la
-          ls -la node_modules || echo "node_modules目录不存在！"
-          echo "pnpm store目录:"
-          pnpm store path
+          pnpm install
+          pnpm run lib
+          ls -la lib || echo "lib目录不存在!"
 
-      # 构建前诊断环境
-      - name: 环境诊断
+      # 安装文档依赖并构建
+      - name: 构建文档
         run: |
-          node --version
-          pnpm --version
-          echo "Node crypto available: $(node -e 'console.log(typeof require("crypto").randomBytes === "function")')"
-          echo "NODE_ENV: $NODE_ENV"
-          echo "检查vitepress是否已安装:"
-          pnpm list vitepress
-          echo "尝试直接找到vitepress可执行文件:"
-          find . -name vitepress
-
-      # 构建VitePress文档 - 使用完整路径
-      - name: 构建文档网站
-        run: |
-          # 尝试使用不同方式执行vitepress
-          ./node_modules/.bin/vitepress build docs || \
-          npx --no-install vitepress build docs || \
-          pnpm exec vitepress build docs
-        env:
-          NODE_ENV: production
-
-      # 检查构建结果
-      - name: 检查构建目录
-        run: ls -la docs/.vitepress/dist || echo "构建目录不存在!"
+          # 确保所有依赖都已安装
+          pnpm install
+          # 构建文档
+          pnpm run docs:build
+          # 检查构建结果
+          ls -la docs/.vitepress/dist || echo "构建目录不存在!"
 
       # 部署到GitHub Pages
       - name: 部署到gh-pages分支
@@ -104,8 +81,6 @@ jobs:
           clean: true # 在部署前清理旧文件
           commit-message: "docs: 自动部署文档 [skip ci]" # 自定义提交消息
           token: ${{ secrets.GITHUB_TOKEN }} # 使用GitHub提供的token
-          git-config-name: GitHub Actions # Git配置
-          git-config-email: actions@github.com # Git配置
 
       # 部署完成通知
       - name: 部署完成
