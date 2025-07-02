@@ -15,9 +15,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    # 添加环境变量解决crypto问题
+    # 添加环境变量解决crypto问题以及确保正确base路径
     env:
       NODE_OPTIONS: --openssl-legacy-provider
+      NODE_ENV: production # 确保使用正确的base路径配置
 
     steps:
       # 检出代码，获取完整历史以便正确处理内容
@@ -71,10 +72,13 @@ jobs:
           node --version
           pnpm --version
           echo "Node crypto available: $(node -e 'console.log(typeof require("crypto").randomBytes === "function")')"
+          echo "NODE_ENV: $NODE_ENV"
 
       # 构建VitePress文档
       - name: 构建文档网站
         run: pnpm run docs:build
+        env:
+          NODE_ENV: production
 
       # 检查构建结果
       - name: 检查构建目录

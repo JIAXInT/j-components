@@ -19,12 +19,11 @@ app.use(chooseIcon);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">基础用法</div>
-      <ClientOnly>
         <j-choose-icon title="选择图标" v-model:visible="visible">
             选择图标
         </j-choose-icon>
-      </ClientOnly>
     </div>
+
   </div>
 </div>
 

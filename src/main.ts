@@ -4,8 +4,8 @@ import App from "./App.vue";
 import router from "./router/index";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
-import * as Icons from "@element-plus/icons-vue";
-import { toLine } from "./utils";
+// import * as Icons from "@element-plus/icons-vue";
+// import { toLine } from "./utils";
 import "./mock/index";
 // import jUI from "../src/components/index";
 
@@ -13,11 +13,12 @@ import "./mock/index";
 // import chooseIcon from "../lib/chooseIcon/index.js";
 // import "../lib/chooseIcon/index.css";
 
-import jUI from "./components";
+// import jUI from "./components";
 // import jUI from "../lib/index.js";
 // import "../lib/j-component.css";
 
-// import jUI from "justic-ui";
+import jUI from "justic-ui";
+import "justic-ui/justic-ui.css";
 
 const app = createApp(App);
 

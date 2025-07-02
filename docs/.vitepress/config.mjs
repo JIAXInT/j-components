@@ -1,4 +1,5 @@
 import { defineConfig } from "vitepress";
+import { resolve } from "path";
 
 import {
   componentPreview,
@@ -18,6 +19,31 @@ export default defineConfig({
     config(md) {
       md.use(componentPreview);
       md.use(containerPreview);
+    },
+  },
+  // 添加vite配置
+  vite: {
+    resolve: {
+      alias: [
+        {
+          find: "justic-ui",
+          replacement: resolve(__dirname, "../../lib"),
+        },
+      ],
+    },
+    // 构建优化
+    build: {
+      minify: "terser",
+      chunkSizeWarningLimit: 1600,
+    },
+    optimizeDeps: {
+      exclude: ["justic-ui"],
+      include: ["element-plus"],
+    },
+    ssr: {
+      // 禁用SSR对这些库的处理
+      noExternal: ["element-plus"],
+      external: ["justic-ui"],
     },
   },
   themeConfig: {
