@@ -27,6 +27,6 @@ jobs:
       - name: 部署到GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist # 构建输出的目录
+          folder: docs/.vitepress/dist # 构建输出的目录
           branch: gh-pages # 部署到的分支
           clean: true # 清理目标分支上的旧文件
