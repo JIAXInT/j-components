@@ -23,15 +23,11 @@ app.use(trend);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">上升趋势</div>
-      <ClientOnly>
         <j-trend type="up">上升趋势</j-trend>
-      </ClientOnly>
     </div>
     <div class="component-preview-block">
       <div class="component-preview-title">下降趋势</div>
-      <ClientOnly>
         <j-trend type="down">下降趋势</j-trend>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -53,19 +49,15 @@ app.use(trend);
   <div class="component-preview-item">
     <div class="component-preview-block" style="background-color:#f9f9f9">
       <div class="component-preview-title">自定义上升</div>
-      <ClientOnly>
         <j-trend type="up" upIconColor="#f5222d" upTextColor="#f5222d">
           营收上升
         </j-trend>
-      </ClientOnly>
     </div>
     <div class="component-preview-block" style="background-color:#f9f9f9">
       <div class="component-preview-title">自定义下降</div>
-      <ClientOnly>
         <j-trend type="down" downIconColor="#52c41a" downTextColor="#52c41a">
           成本下降
         </j-trend>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -89,15 +81,11 @@ app.use(trend);
   <div class="component-preview-item">
     <div class="component-preview-block" style="background-color:#f9f9f9">
       <div class="component-preview-title">反转上升颜色</div>
-      <ClientOnly>
         <j-trend type="up" reverseColor>上升趋势</j-trend>
-      </ClientOnly>
     </div>
     <div class="component-preview-block" style="background-color:#f9f9f9">
       <div class="component-preview-title">反转下降颜色</div>
-      <ClientOnly>
         <j-trend type="down" reverseColor>下降趋势</j-trend>
-      </ClientOnly>
     </div>
   </div>
 </div>

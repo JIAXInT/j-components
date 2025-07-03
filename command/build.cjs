@@ -28,6 +28,39 @@ const rollupOptions = {
   },
 };
 
+// 获取递增的版本号
+const getIncrementedVersion = () => {
+  try {
+    // 读取lib目录下的package.json (应该包含1.1.2版本)
+    const pkgPath = path.resolve(__dirname, "../lib/package.json");
+
+    // 如果lib目录下的package.json不存在，尝试从其他文件获取初始版本
+    let initialVersion = "1.1.2"; // 设置默认初始版本为1.1.2
+
+    if (fs.existsSync(pkgPath)) {
+      const pkgContent = fs.readFileSync(pkgPath, "utf-8");
+      const pkg = JSON.parse(pkgContent);
+      if (pkg && pkg.version) {
+        initialVersion = pkg.version;
+      }
+    }
+
+    // 分割版本号
+    const versionParts = initialVersion.split(".");
+    if (versionParts.length === 3) {
+      // 将最后一位加1
+      const newPatch = parseInt(versionParts[2]) + 1;
+      return `${versionParts[0]}.${versionParts[1]}.${newPatch}`;
+    }
+
+    // 如果没有找到有效的版本号，返回默认值
+    return "1.0.0";
+  } catch (error) {
+    console.error("获取版本号时出错:", error);
+    return "1.0.0";
+  }
+};
+
 // 全量打包构建方法
 const buildAll = async () => {
   await build({
@@ -81,17 +114,48 @@ const createPackageJson = (name) => {
   );
 };
 
+// 确保lib目录存在并包含正确的package.json
+const ensureLibPackageJson = () => {
+  // 确保lib目录存在
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir, { recursive: true });
+  }
+
+  // 检查是否存在package.json
+  const libPkgPath = path.resolve(outDir, "package.json");
+  if (!fs.existsSync(libPkgPath)) {
+    // 如果不存在，创建一个初始的package.json
+    const initialPkg = {
+      name: "justic-ui",
+      version: "1.1.2", // 初始版本设置为1.1.2
+      main: "index.umd.cjs",
+      module: "index.js",
+      types: "index.d.ts",
+      author: "Justic",
+      keywords: ["element-plus", "ts", "封装组件", "组件库"],
+    };
+    fs.writeFileSync(libPkgPath, JSON.stringify(initialPkg, null, 2), "utf-8");
+    console.log("已创建初始的lib/package.json文件，版本号为1.1.2");
+  }
+};
+
 // 打包成库
 const buildLib = async () => {
+  // 确保lib目录和package.json存在
+  ensureLibPackageJson();
+
   // 全量引入
   await buildAll();
+
+  // 获取递增后的版本号
+  const newVersion = getIncrementedVersion();
 
   // 全量打包后生成 lib/package.json
   const libPkgPath = path.resolve(outDir, "package.json");
   // 只保留部分字段
   const libPkg = {
     name: "justic-ui",
-    version: "1.*.*",
+    version: newVersion,
     main: "index.umd.cjs",
     module: "index.js",
     types: "index.d.ts",

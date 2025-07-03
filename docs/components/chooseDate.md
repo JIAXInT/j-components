@@ -22,12 +22,10 @@ app.use(chooseDate);
 <div style="padding:1.5em;margin:1.5em 0;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);background-color:#fff">
   <div style="display:flex;flex-direction:column;align-items:center;padding:1em">
     <div style="margin-bottom:0.5em;font-size:14px;color:#666">基础日期选择器</div>
-    <ClientOnly>
       <j-choose-date 
         @startChange="startChange" 
         @endChange="endChange">
       </j-choose-date>
-    </ClientOnly>
   </div>
 </div>
 
@@ -68,12 +66,10 @@ const endChange = (value) => {
 <div style="padding:1.5em;margin:1.5em 0;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);background-color:#fff">
   <div style="display:flex;flex-direction:column;align-items:center;padding:1em">
     <div style="margin-bottom:0.5em;font-size:14px;color:#666">自定义占位文本</div>
-    <ClientOnly>
       <j-choose-date
         startPlaceholder="入职日期"
         endPlaceholder="离职日期">
       </j-choose-date>
-    </ClientOnly>
   </div>
 </div>
 
@@ -91,10 +87,8 @@ const endChange = (value) => {
 <div style="padding:1.5em;margin:1.5em 0;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);background-color:#fff">
   <div style="display:flex;flex-direction:column;align-items:center;padding:1em">
     <div style="margin-bottom:0.5em;font-size:14px;color:#666">允许选择历史日期</div>
-    <ClientOnly>
       <j-choose-date :disabledBeforeToday="false">
       </j-choose-date>
-    </ClientOnly>
   </div>
 </div>
 

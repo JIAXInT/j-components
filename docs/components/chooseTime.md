@@ -22,12 +22,10 @@ app.use(chooseTime);
 <div style="padding:1.5em;margin:1.5em 0;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);background-color:#fff">
   <div style="display:flex;flex-direction:column;align-items:center;padding:1em">
     <div style="margin-bottom:0.5em;font-size:14px;color:#666">基础时间选择器</div>
-    <ClientOnly>
       <j-choose-time 
         @startChange="startChange" 
         @endChange="endChange">
       </j-choose-time>
-    </ClientOnly>
   </div>
 </div>
 
@@ -68,13 +66,13 @@ const endChange = (value) => {
 <div style="padding:1.5em;margin:1.5em 0;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);background-color:#fff">
   <div style="display:flex;flex-direction:column;align-items:center;padding:1em">
     <div style="margin-bottom:0.5em;font-size:14px;color:#666">自定义占位文本</div>
-    <ClientOnly>
+    
       <j-choose-time
         startPlaceholder="上班时间"
         endPlaceholder="下班时间"
       >
       </j-choose-time>
-    </ClientOnly>
+    
   </div>
 </div>
 
@@ -92,7 +90,7 @@ const endChange = (value) => {
 <div style="padding:1.5em;margin:1.5em 0;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);background-color:#fff">
   <div style="display:flex;flex-direction:column;align-items:center;padding:1em">
     <div style="margin-bottom:0.5em;font-size:14px;color:#666">自定义时间范围</div>
-    <ClientOnly>
+    
       <j-choose-time
         startTimeStart="07:00"
         startTimeEnd="12:00"
@@ -102,7 +100,7 @@ const endChange = (value) => {
         endStep="00:30"
       >
       </j-choose-time>
-    </ClientOnly>
+    
   </div>
 </div>
 

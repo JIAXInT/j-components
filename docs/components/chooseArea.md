@@ -19,9 +19,7 @@ app.use(chooseArea);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">基础用法</div>
-      <ClientOnly>
         <j-choose-area @change="changeArea" />
-      </ClientOnly>
     </div>
     <div class="component-preview-block">
       <div class="component-preview-title">返回值示例：</div>
@@ -47,9 +45,7 @@ let changeArea = (value) => {
 
 ```vue
 <template>
-  <ClientOnly>
-    <j-choose-area @change="changeArea" />
-  </ClientOnly>
+  <j-choose-area @change="changeArea" />
 </template>
 
 <script setup lang="ts">

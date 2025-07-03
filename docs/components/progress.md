@@ -19,9 +19,7 @@ app.use(progress);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">基础用法</div>
-      <ClientOnly>
         <j-progress :percentage="50"></j-progress>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -38,9 +36,7 @@ app.use(progress);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">自定义颜色</div>
-      <ClientOnly>
         <j-progress :percentage="50" color="red"></j-progress>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -57,9 +53,7 @@ app.use(progress);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">自定义高度</div>
-      <ClientOnly>
         <j-progress :percentage="50" :stroke-width="20"></j-progress>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -76,9 +70,7 @@ app.use(progress);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">显示文字</div>
-      <ClientOnly>
         <j-progress :percentage="50" :text-inside="true"></j-progress>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -95,9 +87,7 @@ app.use(progress);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">动画效果</div>
-      <ClientOnly>
         <j-progress :percentage="50" :animation="true"></j-progress>
-      </ClientOnly>
     </div>
   </div>
 </div>

@@ -61,4 +61,8 @@ const changeRef = (inputInstance: any) => {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.el-badge__content) {
+  cursor: pointer !important;
+}
+</style>

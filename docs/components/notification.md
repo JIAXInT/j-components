@@ -23,13 +23,11 @@ app.use(notification);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">基本使用</div>
-      <ClientOnly>
         <j-notification :value="3">
           <template #content>
             <div>您有3条未读消息</div>
           </template>
         </j-notification>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -54,13 +52,11 @@ app.use(notification);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">自定义图标</div>
-      <ClientOnly>
         <j-notification :value="5" icon="Message">
           <template #content>
             <div>您有5条新邮件</div>
           </template>
         </j-notification>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -77,26 +73,24 @@ app.use(notification);
 
 ## 红点提示
 
-通过设置 `is-dot` 属性可以将徽章显示为小红点。
+通过设置 `isDot` 属性可以将徽章显示为小红点。
 
 <div class="component-preview-container">
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">红点提示</div>
-      <ClientOnly>
-        <j-notification :is-dot="true">
+        <j-notification :isDot="true">
           <template #content>
             <div>您有新的系统通知</div>
           </template>
         </j-notification>
-      </ClientOnly>
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <j-notification :is-dot="true">
+  <j-notification :isDot="true">
     <template #content>
       <div>您有新的系统通知</div>
     </template>
@@ -112,13 +106,11 @@ app.use(notification);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">最大值设置</div>
-      <ClientOnly>
         <j-notification :value="120" :max="99">
           <template #content>
             <div>您有120条未读消息</div>
           </template>
         </j-notification>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -141,7 +133,6 @@ app.use(notification);
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">简单自定义内容</div>
-      <ClientOnly>
         <j-notification :value="3">
           <template #content>
             <div>
@@ -158,7 +149,6 @@ app.use(notification);
             </div>
           </template>
         </j-notification>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -188,17 +178,79 @@ app.use(notification);
 
 通知列表组件可以与 `j-list` 组件结合使用，创建更复杂的通知中心功能。
 
+<script setup>
+// 通知列表数据
+const list = [
+  {
+    title: "通知",
+    content: [
+      {
+        title: "系统管理员回复了您的邮件",
+        time: "2023-05-08 14:33:18",
+        avatar:
+          "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png",
+      },
+      {
+        title: "项目经理邀请您参加会议",
+        time: "2023-05-08 10:20:36",
+        avatar:
+          "https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png",
+      },
+    ],
+  },
+  {
+    title: "关注",
+    content: [
+      {
+        avatar:
+          "https://gw.alipayobjects.com/zos/rmsportal/fcHMVNCjPOsbUGdEduuv.jpeg",
+        title: "用户A 评论了您",
+        desc: "这是一条评论内容",
+        time: "3小时前",
+      },
+    ],
+  },
+  {
+    title: "代办",
+    content: [
+      {
+        title: "需求评审会议",
+        desc: "任务需要在 2023-05-12 20:00 前完成",
+        tag: "未开始",
+        tagType: "",
+      },
+      {
+        title: "紧急代码更新",
+        desc: "开发提交于 2023-05-06，需在 2023-05-07 前完成代码审核",
+        tag: "马上到期",
+        tagType: "danger",
+      },
+    ],
+  },
+];
+
+// 操作按钮
+const actions = [
+  {
+    text: "清空代办",
+    icon: "delete",
+  },
+  {
+    text: "查看更多",
+    icon: "edit",
+  },
+];
+</script>
+
 <div class="component-preview-container">
   <div class="component-preview-item">
     <div class="component-preview-block">
       <div class="component-preview-title">高级通知中心</div>
-      <ClientOnly>
         <j-notification :value="15" :max="30">
           <template #content>
             <j-list :list="list" :actions="actions"></j-list>
           </template>
         </j-notification>
-      </ClientOnly>
     </div>
   </div>
 </div>
@@ -277,17 +329,55 @@ const actions = [
 </script>
 ```
 
+## 自定义触发方式
+
+通过 `trigger` 属性可以设置通知弹出层的触发方式。
+
+<div class="component-preview-container">
+  <div class="component-preview-item">
+    <div class="component-preview-block">
+      <div class="component-preview-title">点击触发</div>
+        <j-notification :value="3" trigger="click">
+          <template #content>
+            <div>点击图标触发显示</div>
+          </template>
+        </j-notification>
+    </div>
+  </div>
+</div>
+
+```vue
+<template>
+  <j-notification :value="3" trigger="click">
+    <template #content>
+      <div>点击图标触发显示</div>
+    </template>
+  </j-notification>
+</template>
+```
+
 ## 属性
 
-| 属性名 | 说明             | 类型            | 默认值 |
-| ------ | ---------------- | --------------- | ------ |
-| icon   | 图标名称         | string          | 'Bell' |
-| value  | 显示的值         | number / string | ''     |
-| max    | 最大值           | number          | 99     |
-| isDot  | 是否显示为小红点 | boolean         | false  |
+| 属性名    | 说明             | 类型            | 默认值      |
+| --------- | ---------------- | --------------- | ----------- |
+| icon      | 图标名称         | string          | 'Bell'      |
+| value     | 显示的值         | number / string | ''          |
+| max       | 最大值           | number          | 99          |
+| isDot     | 是否显示为小红点 | boolean         | false       |
+| trigger   | 触发方式         | string          | 'hover'     |
+| width     | 弹出层宽度       | number          | 300         |
+| placement | 弹出层位置       | string          | 'top-start' |
 
 ## 插槽
 
 | 插槽名  | 说明         |
 | ------- | ------------ |
 | content | 弹出层的内容 |
+| default | 默认内容     |
+
+## 事件
+
+| 事件名 | 说明           | 回调参数 |
+| ------ | -------------- | -------- |
+| show   | 显示弹出层触发 | -        |
+| hide   | 隐藏弹出层触发 | -        |

@@ -5,6 +5,11 @@
 // 4.在App.vue里面引入这个类名空间
 // 5.在组件里面使用这个类名空间(需要改元素的父元素）
 
+svg {
+  width: 1em;
+  height: 1em;
+}
+
 .j-choose-icon-dialog-body-height {
   .el-dialog__body {
     height: 500px;
